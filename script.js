@@ -1,48 +1,48 @@
 // ===== 1. DATA =====
 // Every destination is an object in this array.
-// The cards, the dropdown and the price total are all built from it,
+// The cards, the checkboxes and the price total are all built from it,
 // so to add or change a destination you only edit this list.
 const destinations = [
   {
     name: "Nungwi Beach",
     category: "Beach",
     description: "Powdery white sand and calm turquoise water at the northern tip of the island. Famous for its sunsets.",
-    price: 60,
+    price: 600,
     image: "images/nungwi.jfif"
   },
   {
     name: "Kendwa Beach",
     category: "Beach",
     description: "A relaxed stretch of sand where the water stays swimmable at any tide. Great for full-moon beach parties.",
-    price: 55,
+    price: 550,
     image: "images/kendwa.jfif"
   },
   {
     name: "Stone Town",
     category: "Culture",
     description: "A UNESCO World Heritage Site of narrow alleys, carved wooden doors and centuries of Swahili history.",
-    price: 40,
+    price: 400,
     image: "images/stone-town.jfif"
   },
   {
     name: "Spice Farm Tour",
     category: "Culture",
     description: "Walk through plantations of cloves, cinnamon and vanilla, and taste fruit straight from the tree.",
-    price: 35,
+    price: 350,
     image: "images/spice-farm.jfif"
   },
   {
     name: "Jozani Forest",
     category: "Nature",
     description: "Zanzibar's last natural forest, home to the rare red colobus monkey found nowhere else on earth.",
-    price: 45,
+    price: 450,
     image: "images/jozani.jfif"
   },
   {
     name: "Prison Island",
     category: "Nature",
     description: "A short boat ride from Stone Town to meet the giant Aldabra tortoises, some over a hundred years old.",
-    price: 50,
+    price: 500,
     image: "images/prison-island.jfif"
   }
 ];
@@ -53,7 +53,7 @@ const filterButtons = document.querySelectorAll(".filter-btn");
 const form = document.getElementById("booking-form");
 const nameInput = document.getElementById("name");
 const emailInput = document.getElementById("email");
-const destinationSelect = document.getElementById("destination");
+const destinationList = document.getElementById("destination-list"); // holds the checkboxes
 const dateInput = document.getElementById("date");
 const travelersInput = document.getElementById("travelers");
 const confirmation = document.getElementById("confirmation");
@@ -83,7 +83,7 @@ function displayDestinations(category) {
         <p>${dest.description}</p>
         <div class="card-footer">
           <span class="price">From $${dest.price} per person</span>
-          <button class="btn book-btn">Book this</button>
+          <button class="btn book-btn">Book</button>
         </div>
       </div>
     `;
@@ -112,19 +112,33 @@ filterButtons.forEach(function (button) {
   });
 });
 
-// ===== 5. DROPDOWN + "BOOK THIS" =====
-// fill the dropdown from the same array so the lists always match
-function fillDestinationDropdown() {
+// ===== 5. CHECKBOXES + "BOOK THIS" =====
+// build one checkbox per destination from the same array so the lists always match
+function fillDestinationCheckboxes() {
   destinations.forEach(function (dest) {
-    const option = document.createElement("option");
-    option.value = dest.name;
-    option.textContent = dest.name;
-    destinationSelect.appendChild(option);
+    const label = document.createElement("label");
+    label.className = "checkbox-item";
+    label.innerHTML = `
+      <input type="checkbox" name="destination" value="${dest.name}">
+      <span>${dest.name}</span>
+      <span class="checkbox-price">$${dest.price} pp</span>
+    `;
+    destinationList.appendChild(label);
+  });
+}
+
+// returns the names of all ticked boxes, e.g. ["Nungwi Beach", "Stone Town"]
+function getSelectedDestinations() {
+  const ticked = destinationList.querySelectorAll("input:checked");
+  return Array.from(ticked).map(function (box) {
+    return box.value;
   });
 }
 
 function selectDestination(name) {
-  destinationSelect.value = name;
+  // tick the matching box (this adds to the selection, it never unticks anything)
+  const box = destinationList.querySelector('input[value="' + name + '"]');
+  box.checked = true;
   clearError("destination");
   document.getElementById("booking").scrollIntoView({ behavior: "smooth" });
 }
@@ -158,9 +172,9 @@ function validateForm() {
     isValid = false;
   }
 
-  // destination: must pick one
-  if (destinationSelect.value === "") {
-    showError("destination", "Please choose a destination.");
+  // destinations: at least one box must be ticked
+  if (getSelectedDestinations().length === 0) {
+    showError("destination", "Please choose at least one destination.");
     isValid = false;
   }
 
@@ -188,6 +202,14 @@ function todayString() {
   return new Date().toISOString().split("T")[0];
 }
 
+// turns ["A"] into "A", ["A", "B"] into "A and B", ["A", "B", "C"] into "A, B and C"
+function joinNames(list) {
+  if (list.length === 1) {
+    return list[0];
+  }
+  return list.slice(0, -1).join(", ") + " and " + list[list.length - 1];
+}
+
 // ===== 7. SUBMIT THE FORM =====
 form.addEventListener("submit", function (event) {
   event.preventDefault(); // stop the page from reloading
@@ -200,7 +222,7 @@ form.addEventListener("submit", function (event) {
 
   // read the values BEFORE resetting the form
   const name = nameInput.value.trim();
-  const destinationName = destinationSelect.value;
+  const selected = getSelectedDestinations();
   const travelers = Number(travelersInput.value);
   const prettyDate = new Date(dateInput.value).toLocaleDateString("en-GB", {
     day: "numeric",
@@ -208,14 +230,17 @@ form.addEventListener("submit", function (event) {
     year: "numeric"
   });
 
-  // look up the price in the array to work out the total
-  const chosen = destinations.find(function (dest) {
-    return dest.name === destinationName;
+  // add up the price of every chosen destination, then multiply by travelers
+  const chosen = destinations.filter(function (dest) {
+    return selected.includes(dest.name);
   });
-  const total = chosen.price * travelers;
+  const pricePerPerson = chosen.reduce(function (sum, dest) {
+    return sum + dest.price;
+  }, 0);
+  const total = pricePerPerson * travelers;
 
   confirmation.textContent =
-    "Thank you, " + name + "! Your request for " + destinationName +
+    "Thank you, " + name + "! Your request for " + joinNames(selected) +
     " on " + prettyDate + " for " + travelers +
     (travelers === 1 ? " traveler" : " travelers") +
     " has been received. Estimated total: $" + total + ".";
@@ -226,13 +251,18 @@ form.addEventListener("submit", function (event) {
 });
 
 // clear a field's error as soon as the user starts fixing it
-[nameInput, emailInput, destinationSelect, dateInput, travelersInput].forEach(function (input) {
+[nameInput, emailInput, dateInput, travelersInput].forEach(function (input) {
   input.addEventListener("input", function () {
     clearError(input.id);
   });
 });
 
+// same for the checkboxes: ticking one clears the destination error
+destinationList.addEventListener("change", function () {
+  clearError("destination");
+});
+
 // ===== 8. RUN WHEN THE PAGE LOADS =====
 dateInput.min = todayString(); // greys out past dates in the date picker
-fillDestinationDropdown();
+fillDestinationCheckboxes();
 displayDestinations("All");
