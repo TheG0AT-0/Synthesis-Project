@@ -8,42 +8,42 @@ const destinations = [
     category: "Beach",
     description: "Powdery white sand and calm turquoise water at the northern tip of the island. Famous for its sunsets.",
     price: 60,
-    image: "images/nungwi.jpeg"
+    image: "images/nungwi.jfif"
   },
   {
     name: "Kendwa Beach",
     category: "Beach",
     description: "A relaxed stretch of sand where the water stays swimmable at any tide. Great for full-moon beach parties.",
     price: 55,
-    image: "images/kendwa.jpeg"
+    image: "images/kendwa.jfif"
   },
   {
     name: "Stone Town",
     category: "Culture",
     description: "A UNESCO World Heritage Site of narrow alleys, carved wooden doors and centuries of Swahili history.",
     price: 40,
-    image: "images/stone-town.jpeg"
+    image: "images/stone-town.jfif"
   },
   {
     name: "Spice Farm Tour",
     category: "Culture",
     description: "Walk through plantations of cloves, cinnamon and vanilla, and taste fruit straight from the tree.",
     price: 35,
-    image: "images/spice-farm.jpeg"
+    image: "images/spice-farm.jfif"
   },
   {
     name: "Jozani Forest",
     category: "Nature",
     description: "Zanzibar's last natural forest, home to the rare red colobus monkey found nowhere else on earth.",
     price: 45,
-    image: "images/jozani.jpeg"
+    image: "images/jozani.jfif"
   },
   {
     name: "Prison Island",
     category: "Nature",
     description: "A short boat ride from Stone Town to meet the giant Aldabra tortoises, some over a hundred years old.",
     price: 50,
-    image: "images/prison-island.jpeg"
+    image: "images/prison-island.jfif"
   }
 ];
 
