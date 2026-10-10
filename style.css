@@ -223,11 +223,18 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; /* on narrow cards the button drops below the price instead of squeezing it */
+  gap: 10px 14px;  /* 10px between rows, 14px between the price and the button */
 }
 
 .price {
   font-weight: bold;
   color: var(--spice-dark);
+}
+
+/* slightly smaller than the hero button so price and button fit side by side */
+.book-btn {
+  padding: 10px 16px;
 }
 
 /* ===== BOOKING FORM ===== */
@@ -266,8 +273,45 @@ body {
 }
 
 /* red border added by script.js when a field is invalid */
-.form-group .invalid {
+.form-group .invalid,
+fieldset.form-group.invalid {
   border-color: var(--error);
+}
+
+/* destination checkboxes (a fieldset groups related inputs) */
+fieldset.form-group {
+  display: block;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  padding: 10px 14px 6px;
+}
+
+fieldset.form-group legend {
+  font-weight: bold;
+  padding: 0 6px;
+}
+
+.checkbox-list .checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: normal;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.checkbox-list input {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  accent-color: var(--ocean);
+}
+
+.checkbox-price {
+  margin-left: auto;
+  color: var(--spice-dark);
+  font-size: 0.9rem;
 }
 
 .error {
