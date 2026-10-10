@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Discover Zanzibar</title>
+  <title>Discoverize - Discover Zanzibar</title>
   <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -26,7 +26,7 @@
     <section id="home" class="hero">
       <div class="hero-content">
         <h1>Welcome to Zanzibar!</h1>
-        <p>White Sand Beaches, Spice-Scented Streets and Turquoise Water. <br>Discover The Perfect Island Escape.</p>
+        <p>White Sand Beaches, Spice-Scented Streets and Turquoise Water. <br>Discover Your Perfect Island Escape.</p>
         <a href="#destinations" class="btn">Explore More</a>
       </div>
     </section>
@@ -36,26 +36,23 @@
       <h2>Top Destinations</h2>
       <p class="section-intro">Pick a category to filter, then book the place that catches your eye.</p>
 
-      <!-- Filter buttons: data-category is read by script.js -->
+      <!-- Filter buttons-->
       <div class="filters">
         <button class="filter-btn active" data-category="All">All</button>
         <button class="filter-btn" data-category="Beach">Beach</button>
         <button class="filter-btn" data-category="Culture">Culture</button>
         <button class="filter-btn" data-category="Nature">Nature</button>
       </div>
-
-      <!-- script.js fills this container with one card per destination -->
       <div class="cards" id="cards"></div>
     </section>
 
-    <!-- ===== BOOKING FORM ===== -->
+    <!--form-->
     <section id="booking" class="section section-alt">
-      <h2>Plan Your Trip</h2>
-      <p class="section-intro">Tell us where and when, and we'll get back to you.</p>
+      <h2>Book A Trip</h2>
+      <p class="section-intro">Fill Up The Form</p>
 
-      <!-- novalidate turns off the browser's own popups so our JavaScript messages show instead -->
+      <!-- JavaScript messages pop up instead of the browser's own-->
       <form id="booking-form" novalidate>
-
         <div class="form-group">
           <label for="name">Full name</label>
           <input type="text" id="name" name="name" placeholder="e.g. Ama Mensah">
@@ -71,8 +68,8 @@
         <div class="form-group">
           <label for="destination">Destination</label>
           <select id="destination" name="destination">
-            <option value="">-- Choose a destination --</option>
-            <!-- options are added by script.js from the destinations array -->
+            <option value="">Choose a destination</option>
+            <!-- options are from the destination array in the script file-->
           </select>
           <span class="error" id="destination-error"></span>
         </div>
@@ -89,19 +86,17 @@
           <span class="error" id="travelers-error"></span>
         </div>
 
-        <button type="submit" class="btn">Request Booking</button>
+        <button type="submit" class="btn">Book</button>
       </form>
-
-      <!-- shown by script.js after a successful submit -->
       <p id="confirmation" class="confirmation" hidden></p>
     </section>
 
   </main>
 
-  <!-- ===== FOOTER ===== -->
+  <!--footer section-->
   <footer class="site-footer">
-    <p>&copy; 2026 Discover Zanzibar. A web technologies class project.</p>
-    <p class="credits">Photos by [photographer names here] via Unsplash / Pexels.</p>
+    <p>&copy; 2026 Discoverize - Discover Zanzibar.</p>
+    <p class="credits">Photos from Google.com</p>
   </footer>
 
   <script src="script.js"></script>
